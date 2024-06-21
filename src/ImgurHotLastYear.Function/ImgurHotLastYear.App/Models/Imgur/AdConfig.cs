@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
-namespace ImgurHotLastYear.App.Models;
+namespace ImgurHotLastYear.App.Models.Imgur;
 
 public class AdConfig
 {

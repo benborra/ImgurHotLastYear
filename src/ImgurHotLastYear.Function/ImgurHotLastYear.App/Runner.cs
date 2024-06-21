@@ -1,4 +1,4 @@
-using ImgurHotLastYear.App.Models;
+using ImgurHotLastYear.App.Models.Imgur;
 using Newtonsoft.Json;
 
 namespace ImgurHotLastYear.App;
