@@ -1,26 +1,32 @@
+using ImgurHotLastYear.App.Models.App;
 using ImgurHotLastYear.App.Models.Imgur;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace ImgurHotLastYear.App;
 
 public class Runner : IRunner
 {
+    public ImgurConfig Configuration { get; }
+
+    public Runner(IOptions<ImgurConfig> configuration)
+    {
+        Configuration = configuration.Value;
+    }
+
     public async Task FetchAndPostAsync()
     {
         // Create an instance of HttpClient
-        using (var client = CreateClient())
-        {
-            Datum mostUpvotedPost = await GetAllFromTodayLastYear(client);
+        using var client = CreateClient();
+        Datum mostUpvotedPost = await GetAllFromTodayLastYearAsync(client);
 
-            // Display the most upvoted post information
-            Console.WriteLine($"Title: {mostUpvotedPost.Title}");
-            Console.WriteLine($"Upvotes: {mostUpvotedPost.Ups}");
-            Console.WriteLine($"Link: {mostUpvotedPost.Link}");
-
-        }
+        // Display the most upvoted post information
+        Console.WriteLine($"Title: {mostUpvotedPost.Title}");
+        Console.WriteLine($"Upvotes: {mostUpvotedPost.Ups}");
+        Console.WriteLine($"Link: {mostUpvotedPost.Link}");
     }
 
-    private static async Task<Datum> GetAllFromTodayLastYear(HttpClient client)
+    private static async Task<Datum> GetAllFromTodayLastYearAsync(HttpClient client)
     {
         var lastYear = DateTime.Today.AddYears(-1);
 
@@ -28,6 +34,8 @@ public class Runner : IRunner
 
 
         throw new NotImplementedException();
+
+        await Task.CompletedTask;
     }
 
     private static async Task<int> GetTheStartingPageAsync(HttpClient client, DateTime lastYear)
@@ -74,14 +82,14 @@ public class Runner : IRunner
         return client;
     }
 
-    private static async Task<T?> TryGetAsync<T>(HttpClient client, string url) where T : class
+    private static async Task<T> TryGetAsync<T>(HttpClient client, string url) where T : class
     {
         var response = client.GetAsync(url);
 
         return await TryParseAsync<T>(response);
     }
 
-    private static async Task<T?> TryParseAsync<T>(Task<HttpResponseMessage?> responseTask)
+    private static async Task<T> TryParseAsync<T>(Task<HttpResponseMessage?> responseTask)
     {
         var response = await responseTask;
 

@@ -1,4 +1,3 @@
-using ImgurHotLastYear.App;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,6 +12,6 @@ public class StartUp
     {
         log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-        await new Runner().FetchAndPostAsync();
+        //await new Runner().FetchAndPostAsync();
     }
 }

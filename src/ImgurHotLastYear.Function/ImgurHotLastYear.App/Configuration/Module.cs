@@ -5,6 +5,8 @@ public static class Module
 {
     public static IServiceCollection AddHotLastYear(this IServiceCollection serviceDescriptors)
     {
-        return serviceDescriptors;
+        return serviceDescriptors
+            .AddScoped<IRunner, Runner>();
+
     }
 }
